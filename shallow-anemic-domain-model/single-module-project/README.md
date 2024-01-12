@@ -11,7 +11,7 @@ framework.
   the scheduler are in separate Spring beans.
 * A custom converter for converting between `ZoneId` and `String` is used both in the UI and in JPA.
 * An SPI with a corresponding implementation is used to send mails.
-* Spring Modulith is used to verify the structure of the application.
+* ArchUnit is used to verify the structure of the application.
  
 ## Notes:
  
@@ -22,7 +22,6 @@ framework.
 * Writing an integration test for the birthday sending job itself is easy thanks to the separation of concerns, but 
   writing an integration test that checks that it actually runs when it is supposed to (i.e. verifying that the CRON 
   string in `@Scheduled` is correct or that scheduling has even been enabled) is difficult.
-* Spring Modulith thinks that `integration` is a module of its own, when in fact it is `integration.mail` that should be
-  the module in this case.
-* Spring Modulith thinks that `ui` is an API package, when in fact the entire module should be considered private.
-* When updating the `Grid` and its selections, it would be nice to be able to use an ID rather than the grid item itself.
+* The ArchUnit tests are currently written in such a way that they allow everything, except when forbidden. In other words,
+  the rules dictate which dependencies are *not* allowed. Would it make more sense to just declare what the allowed dependencies are
+  for each layer?
