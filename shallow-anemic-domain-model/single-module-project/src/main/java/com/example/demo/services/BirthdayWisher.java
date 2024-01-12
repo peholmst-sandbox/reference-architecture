@@ -36,6 +36,7 @@ class BirthdayWisher {
     @Transactional(propagation = Propagation.NEVER) // Each repository call should run inside its own transaction
     public void sendBirthdayWishesForToday(Clock clock) {
         log.debug("Sending birthday wishes for today");
+        // TODO In a real world application, this query should be paginated or streamed.
         contactRepository.findAll(ContactSpecifications.withBirthDay(MonthDay.now(clock)))
                 .forEach(contact -> executor.execute(() -> sendBirthdayWishes(contact, clock)));
     }

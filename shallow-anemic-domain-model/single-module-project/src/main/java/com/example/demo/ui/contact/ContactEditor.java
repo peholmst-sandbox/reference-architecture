@@ -105,9 +105,10 @@ public class ContactEditor extends VerticalLayout {
 
     private void save() {
         if (binder.validate().isOk()) {
+            var isNew = binder.getBean().isNew();
             var contact = contactService.save(binder.getBean());
             setBean(contact);
-            onSaveCallback.contactSaved(contact);
+            onSaveCallback.contactSaved(contact, isNew);
         }
     }
 
@@ -120,7 +121,7 @@ public class ContactEditor extends VerticalLayout {
 
     @FunctionalInterface
     public interface OnSaveCallback {
-        void contactSaved(Contact contact);
+        void contactSaved(Contact contact, boolean isNew);
     }
 
     @FunctionalInterface

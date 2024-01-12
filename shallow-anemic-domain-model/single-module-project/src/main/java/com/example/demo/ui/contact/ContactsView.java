@@ -2,7 +2,6 @@ package com.example.demo.ui.contact;
 
 import com.example.demo.domain.Contact;
 import com.example.demo.services.ContactService;
-import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -14,14 +13,14 @@ import com.vaadin.flow.router.Route;
 @Route("")
 public class ContactsView extends SplitLayout {
 
-    private final ContactService contactService;
+    private final ContactDataProvider contactDataProvider;
     private final Grid<Contact> contactGrid;
     private final ContactEditor contactForm;
 
     public ContactsView(ContactService contactService) {
-        this.contactService = contactService;
+        this.contactDataProvider = new ContactDataProvider(contactService);
 
-        contactGrid = new Grid<>();
+        contactGrid = new Grid<>(contactDataProvider);
         contactGrid.addColumn(Contact::getLastName).setHeader("Last name");
         contactGrid.addColumn(Contact::getFirstName).setHeader("First name");
         contactGrid.addColumn(Contact::getBirthDate).setHeader("Birth date");
@@ -46,11 +45,6 @@ public class ContactsView extends SplitLayout {
         setSizeFull();
     }
 
-    @Override
-    protected void onAttach(AttachEvent attachEvent) {
-        refreshEntireGrid();
-    }
-
     private void select(Contact contact) {
         contactForm.edit(contact);
     }
@@ -69,17 +63,21 @@ public class ContactsView extends SplitLayout {
         contactGrid.deselectAll();
     }
 
-    private void refreshInGrid(Contact contact) {
-        justRefreshGrid();
+    private void refreshInGrid(Contact contact, boolean isNew) {
+        if (isNew) {
+            contactDataProvider.refreshAll();
+        } else {
+            contactDataProvider.refreshItem(contact);
+        }
         contactGrid.select(contact);
     }
 
     private void removeFromGrid(Contact contact) {
-        justRefreshGrid();
+        contactDataProvider.refreshItem(contact);
         contactGrid.deselectAll();
     }
 
     private void justRefreshGrid() {
-        contactGrid.setItems(contactService.findAll());
+        contactDataProvider.refreshAll();
     }
 }

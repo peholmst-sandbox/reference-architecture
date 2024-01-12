@@ -7,6 +7,7 @@ framework.
 * The business logic is in the service layer. There are no value objects.
 * Bean validation is used for validation both in the UI and in the service layer (implicitly).
 * JPA criteria and Spring Data Specifications are used for one special query.
+* The Spring Data Scrolling API is used for lazy loading into the grid.
 * There is one scheduled background job that sends out birthday wishes. Following best practices, the job itself and
   the scheduler are in separate Spring beans.
 * A custom converter for converting between `ZoneId` and `String` is used both in the UI and in JPA.

@@ -14,6 +14,9 @@ import java.time.ZoneId;
 @Entity
 public class Contact extends AbstractPersistable<Long> {
 
+    public static final String PROP_FIRST_NAME = "firstName";
+    public static final String PROP_LAST_NAME = "lastName";
+    public static final String PROP_ID = "id";
     public static final int FIRST_NAME_MAX_LENGTH = 300;
     public static final int LAST_NAME_MAX_LENGTH = 300;
     public static final int EMAIL_MAX_LENGTH = 320;
